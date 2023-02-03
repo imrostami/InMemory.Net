@@ -125,6 +125,37 @@ namespace Melissa.Api.Libs.InMemorylib
            
         }
 
+        public void IncreaseNumber(string key , string dbName = "init")
+        {
+            var value = GetDB(dbName)[key];
+            if(int.TryParse(value ,  out var val))
+            {
+                val += 1;
+                SetValue(key , val.ToString() , dbName);
+
+            }
+            else
+            {
+                throw new Exception("the value can not parse to int datatype");
+            }
+
+        }
+        public void DecreaseNumber(string key, string dbName = "init")
+        {
+            var value = GetDB(dbName)[key];
+            if (int.TryParse(value, out var val))
+            {
+                val -= 1;
+                SetValue(key, val.ToString(), dbName);
+
+            }
+            else
+            {
+                throw new Exception("the value can not parse to int datatype");
+            }
+        }
+
+
 
     }
 }
