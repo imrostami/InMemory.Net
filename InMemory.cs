@@ -65,6 +65,11 @@ namespace Melissa.Api.Libs.InMemorylib
             return true;
 
         }
+
+        public bool SetIntValue(string key, int value, string dbName = "init")
+            => SetValue(key, value.ToString(), dbName);
+
+
         public string? GetValue(string key , string dbName = "init")
         {
             db.TryGetValue(dbName, out var collection);
