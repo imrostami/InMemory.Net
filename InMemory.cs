@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Concurrent;
 using System.Text.Json;
 
@@ -37,6 +38,7 @@ namespace InMemorylib
         /// <returns>return true if database created and return false if database exist</returns>
         public bool CreateEmptyDatabase(string dbName)
             => db.TryAdd(dbName, new());
+       
 
         /// <summary>
         /// remoing a existing database from memory
@@ -52,7 +54,7 @@ namespace InMemorylib
             return db.TryRemove(dbName, out _);
         }
 
-        public bool SetValue( string key, string value = "", string dbName = "init")
+        public bool SetValue(string key, string value = "", string dbName = "init")
         {
             var collection = GetDB(dbName);
 
@@ -64,6 +66,63 @@ namespace InMemorylib
             db.AddOrUpdate(dbName , collection, (e, x) => collection);
             return true;
 
+        }
+        /// <summary>
+        /// Adding records to the database without the need for a key and as an automatic increase
+        /// </summary>
+        /// <param name="value">the value for you data</param>
+        /// <param name="dbName">your database name</param>
+        /// <returns>if true the seting value has ok</returns>
+        /// <exception cref="Exception"></exception>
+        public bool SetValue(string value = "", string dbName = "init" , int incraseFrom = 1)
+        {
+            var collection = GetDB(dbName);
+
+            if (collection is null)
+            {
+                throw new Exception($"db with name {dbName} not found");
+            }
+            else if(collection.Count == 0)
+            {
+                collection.AddOrUpdate($"{incraseFrom}", value, (e, x) => value);
+                db.AddOrUpdate(dbName, collection, (e, x) => collection);
+                return true;
+            }
+            else
+            {
+                var lastRecordId = int.Parse(collection.MaxBy(f=>f.Key).Key);
+                lastRecordId += 1;
+                collection.AddOrUpdate(lastRecordId.ToString(), value, (e, x) => value);
+                db.AddOrUpdate(dbName, collection, (e, x) => collection);
+                return true;
+
+            }
+            
+        }
+
+
+        /// <summary>
+        /// Adding records to the database without the need for a key and as an Guid Text 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="dbName"></param>
+        /// <param name="guidKey">If true, the record key will be a guid automatically</param>
+        /// <returns>return true if record created</returns>
+        /// <exception cref="Exception"></exception>
+        public bool SetValue(bool guidKey , string value = "", string dbName = "init")
+        {
+            var collection = GetDB(dbName);
+
+            if (collection is null)
+            {
+                throw new Exception($"db with name {dbName} not found");
+            }
+
+            var recordGuid = Guid.NewGuid().ToString("N");
+
+            collection.AddOrUpdate(recordGuid, value, (e, x) => value);
+            db.AddOrUpdate(dbName, collection, (e, x) => collection);
+            return true;
         }
 
         public bool SetIntValue(string key, int value, string dbName = "init")
