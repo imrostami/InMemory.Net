@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text.Json;
 
 namespace Melissa.Api.Libs.InMemorylib
 {
@@ -93,6 +94,35 @@ namespace Melissa.Api.Libs.InMemorylib
                 return true;
             }
             return false;
+        }
+
+        public void SaveMemoryChanges(string backupName = "appMemory")
+        {
+            var jsonStr = JsonSerializer.Serialize(db);
+            File.WriteAllText(jsonStr, backupName);
+        }
+        public void LoadMemoryChanges(string backupName = "appMemory")
+        {
+            if(!File.Exists(backupName))
+            {
+                return;
+            }
+            else
+            {
+                var jsonStr = File.ReadAllText(backupName);
+                try
+                {
+                    db = JsonSerializer.Deserialize<ConcurrentDictionary<string, ConcurrentDictionary<string, string>>>(jsonStr);
+                }
+                catch
+                {
+                    throw new Exception("The memory file Structure is invalid")
+                    
+                }
+            }
+            
+
+           
         }
 
 
