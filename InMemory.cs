@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
 
-namespace Melissa.Api.Libs.InMemorylib
+namespace InMemorylib
 {
     public class InMemory
     {
