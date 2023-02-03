@@ -121,7 +121,7 @@ namespace Melissa.Api.Libs.InMemorylib
                 }
                 catch
                 {
-                    throw new Exception("The memory file Structure is invalid")
+                    throw new Exception("The memory file Structure is invalid");
                     
                 }
             }
@@ -159,6 +159,8 @@ namespace Melissa.Api.Libs.InMemorylib
                 throw new Exception("the value can not parse to int datatype");
             }
         }
+
+       
 
 
 
