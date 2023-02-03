@@ -1,4 +1,8 @@
-public class InMemory
+using System.Collections.Concurrent;
+
+namespace Melissa.Api.Libs.InMemorylib
+{
+    public class InMemory
     {
         private ConcurrentDictionary<string, ConcurrentDictionary<string, string>> db;
         private string defaultDb;
@@ -72,5 +76,25 @@ public class InMemory
 
         }
 
+        public bool DBExist(string dbName = "init")
+            => db.Any(f => f.Key == dbName);
+
+
+        /// <summary>
+        /// create a database if not exist
+        /// </summary>
+        /// <param name="dbName"></param>
+        /// <returns>return true if db sucsses created</returns>
+        public bool CreateDBIfNotExist(string dbName = "init")
+        {
+            if(!DBExist(dbName))
+            {
+                CreateEmptyDatabase(dbName);
+                return true;
+            }
+            return false;
+        }
+
 
     }
+}
