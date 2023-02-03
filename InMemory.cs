@@ -109,7 +109,7 @@ namespace InMemorylib
         /// <param name="guidKey">If true, the record key will be a guid automatically</param>
         /// <returns>return true if record created</returns>
         /// <exception cref="Exception"></exception>
-        public bool SetValueAsGuidKey (bool guidKey , string value = "", string dbName = "init")
+        public bool SetValueAsGuidKey (string value = "", string dbName = "init")
         {
             var collection = GetDB(dbName);
 
