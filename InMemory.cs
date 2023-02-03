@@ -133,6 +133,10 @@ namespace InMemorylib
         public void IncreaseNumber(string key , string dbName = "init")
         {
             var value = GetDB(dbName)[key];
+            if(value == "")
+            {
+                value = "0";
+            }
             if(int.TryParse(value ,  out var val))
             {
                 val += 1;
