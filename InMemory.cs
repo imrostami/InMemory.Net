@@ -74,7 +74,7 @@ namespace InMemorylib
         /// <param name="dbName">your database name</param>
         /// <returns>if true the seting value has ok</returns>
         /// <exception cref="Exception"></exception>
-        public bool SetValue(string value = "", string dbName = "init" , int incraseFrom = 1)
+        public bool SetValueAsAutoIncrementKey(string value = "", string dbName = "init" , int incraseFrom = 1)
         {
             var collection = GetDB(dbName);
 
@@ -109,7 +109,7 @@ namespace InMemorylib
         /// <param name="guidKey">If true, the record key will be a guid automatically</param>
         /// <returns>return true if record created</returns>
         /// <exception cref="Exception"></exception>
-        public bool SetValue(bool guidKey , string value = "", string dbName = "init")
+        public bool SetValueAsGuidKey (bool guidKey , string value = "", string dbName = "init")
         {
             var collection = GetDB(dbName);
 
