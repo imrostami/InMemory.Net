@@ -104,7 +104,7 @@ namespace InMemorylib
         public void SaveMemoryChanges(string backupName = "appMemory")
         {
             var jsonStr = JsonSerializer.Serialize(db);
-            File.WriteAllText(jsonStr, backupName);
+            File.WriteAllText(backupName , jsonStr);
         }
         public void LoadMemoryChanges(string backupName = "appMemory")
         {
@@ -177,6 +177,18 @@ namespace InMemorylib
             {
                 throw new Exception("the value can not parse to int datatype");
             }
+        }
+
+        public bool KeyExist(string key , string dbName = "init")
+        {
+            var collection = GetDB(dbName);
+            if(collection is null)
+            {
+                throw new Exception($"db with name {dbName} not found");
+            }
+
+            return collection.Any(f => f.Key == key);
+           
         }
 
        
