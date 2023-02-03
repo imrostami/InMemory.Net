@@ -132,21 +132,36 @@ namespace InMemorylib
 
         public void IncreaseNumber(string key , string dbName = "init")
         {
-            var value = GetDB(dbName)[key];
-            if(value == "")
+            var dbCol = GetDB(dbName);
+            if(dbCol is not null && dbCol.Any(f=>f.Key == key))
             {
-                value = "0";
-            }
-            if(int.TryParse(value ,  out var val))
-            {
-                val += 1;
-                SetValue(key , val.ToString() , dbName);
+                var value = dbCol[key];
 
+                if (value == "")
+                {
+                    value = "0";
+                }
+                if (int.TryParse(value, out var val))
+                {
+                    val += 1;
+                    SetValue(key, val.ToString(), dbName);
+
+                }
+                else
+                {
+                    throw new Exception("the value can not parse to int datatype");
+                }
+            }
+            else if(dbCol is null)
+            {
+                throw new Exception($"database with name {dbName} not found");
             }
             else
             {
-                throw new Exception("the value can not parse to int datatype");
+                SetIntValue(key, 0, dbName);
             }
+            
+           
 
         }
         public void DecreaseNumber(string key, string dbName = "init")
